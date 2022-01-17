@@ -1,5 +1,6 @@
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,17 +10,16 @@ import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/restaurant_screen.dart';
 import 'package:food_delivery_app/services/http_request.dart';
-
 import 'models/restaurant.dart';
-
-void main() {
+// Import the generated file
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+ await  Firebase.initializeApp(
+ );
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
        scaffoldBackgroundColor: Colors.grey[50],
        primaryColor: Colors.deepOrangeAccent
      ),
-     home: HomeScreenPage(),
+     home: AuthScreen(),
 
     );
   }
