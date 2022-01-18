@@ -8,6 +8,7 @@ import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/logic/cubit/internet_cubit.dart';
+import 'package:food_delivery_app/screens/auth_screen.dart';
 import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/widgets/nearby_restaurants.dart';
 import 'package:food_delivery_app/widgets/recentorders.dart';
@@ -29,10 +30,29 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
     return BlocProvider(create: (context)=>
         InternetCubit(connectivity: connectivity),
      child: Scaffold(
+       drawer: Drawer(
+         child: Container(
+           margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 60.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+          children:[
+            TextButton(onPressed: (){
+               Navigator.pushReplacement(context, 
+                   MaterialPageRoute(builder: (context)=> AuthScreen()));
+             }, child: Text("Logout",style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18.0,
+                color: Colors.white),))
+             ]
+            )
+         ),
+       ),
+
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        leading: Icon(Icons.person_pin),
+        leading: Icon(Icons.person),
         centerTitle: true,
+        
         title: const Text("Snacks",style: TextStyle(
           fontSize: 22.0,
             fontWeight: FontWeight.bold,
