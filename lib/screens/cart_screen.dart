@@ -11,7 +11,13 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+
   _buildCardItem(Order order){
+    int counter =0;
+
+    final int minValue=0;
+    final int maxValue=1000;
+    print("repeat steps");
    return  Container(
       margin: EdgeInsets.all(10.0),
       height: 170.0,
@@ -58,7 +64,8 @@ class _CartScreenState extends State<CartScreen> {
                             height: 10.0,
                           ),
                           Container(
-                            width: 100.0,
+                            height: 40,
+                            width: 120.0,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     10.0),
@@ -66,36 +73,38 @@ class _CartScreenState extends State<CartScreen> {
                                     color: Colors.black)
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 GestureDetector(
-                                  onTap: () => print("-"),
-                                  child: Text("-",
-                                    style: TextStyle(fontSize: 24.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Theme
-                                            .of(context)
-                                            .primaryColor),),
-                                ),
-
-                                Text(order.quantity.toString(),
+                                onTap: (){
+                                setState(() {
+                                  if(counter > minValue)
+                                  counter--;
+                                  print(counter);
+                                });
+                              },
+                                child: Icon(CupertinoIcons.minus,
+                                  size: 25,
+                                  color: Theme.of(context).primaryColor,),
+                              ),
+                                Text("${counter}",
                                   style: TextStyle(fontSize: 16.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
 
                                 GestureDetector(
-                                  onTap: () => print("+"),
-                                  child: Text("+",
-                                      style: TextStyle(fontSize: 20.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: Theme
-                                              .of(context)
-                                              .primaryColor)
-                                  ),
+                                  onTap: (){
+                                    setState(() {
+                                      if(counter < maxValue)
+                                        counter++;
+                                      print(counter);
+                                    });
+                                  },
+                                  child: Icon(Icons.add,
+                                    size: 25,
+                                    color: Theme.of(context).primaryColor,),
                                 ),
-
 
                               ],
                             ),
@@ -108,12 +117,13 @@ class _CartScreenState extends State<CartScreen> {
               )
           ),
           Container(
-            child: Text("\$${order.quantity * order.food.price}",
-              style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w600
-              ),),
-          )
+                child: Text("\$${counter * order.food.price}",
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w600
+                  ),),
+          ),
+
         ],
       ),
 
@@ -124,7 +134,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     double totalprice=0.0;
-    currentUser.cart.forEach((Order order) => totalprice+= order.quantity * order.food.price
+    currentUser.cart.forEach((Order order) => totalprice+= counter * order.food.price
 
     );
     return Scaffold(

@@ -28,6 +28,7 @@ final _restaurant0 = Restaurant(
   address: '200 Main St, New York, NY',
   rating: 5,
   menu: [_burrito, _steak, _pasta, _ramen, _pancakes, _burger, _pizza, _salmon],
+  id: '0',
 );
 final _restaurant1 = Restaurant(
   imageUrl: 'assets/images/restaurant1.jpg',
@@ -35,6 +36,7 @@ final _restaurant1 = Restaurant(
   address: '200 Main St, New York, NY',
   rating: 4,
   menu: [_steak, _pasta, _ramen, _pancakes, _burger, _pizza],
+    id: '1'
 );
 final _restaurant2 = Restaurant(
   imageUrl: 'assets/images/restaurant2.jpg',
@@ -42,6 +44,7 @@ final _restaurant2 = Restaurant(
   address: '200 Main St, New York, NY',
   rating: 4,
   menu: [_steak, _pasta, _pancakes, _burger, _pizza, _salmon],
+    id: '2'
 );
 final _restaurant3 = Restaurant(
   imageUrl: 'assets/images/restaurant3.jpg',
@@ -49,6 +52,7 @@ final _restaurant3 = Restaurant(
   address: '200 Main St, New York, NY',
   rating: 2,
   menu: [_burrito, _steak, _burger, _pizza, _salmon],
+    id: '3'
 );
 final _restaurant4 = Restaurant(
   imageUrl: 'assets/images/restaurant4.jpg',
@@ -56,6 +60,7 @@ final _restaurant4 = Restaurant(
   address: '200 Main St, New York, NY',
   rating: 3,
   menu: [_burrito, _ramen, _pancakes, _salmon],
+    id: '4'
 );
 
 final List<Restaurant> restaurants = [

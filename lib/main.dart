@@ -24,14 +24,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return
      MaterialApp(
-      debugShowCheckedModeBanner: false, title: 'Food Delivery App',
-
+      debugShowCheckedModeBanner: false,
+       title: 'Food Delivery App',
      theme: ThemeData(
        visualDensity: VisualDensity.adaptivePlatformDensity,
        scaffoldBackgroundColor: Colors.grey[50],
        primaryColor: Colors.deepOrangeAccent,
        canvasColor: Colors.deepOrangeAccent,
-
      ),
      home: HomeScreenPage(),
 
