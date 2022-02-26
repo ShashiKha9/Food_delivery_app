@@ -1,0 +1,5 @@
+enum Internet{
+  Online,
+  Offline
+
+}

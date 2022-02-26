@@ -2,14 +2,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery_app/constants/internet.dart';
 import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/logic/cubit/internet_cubit.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
-import 'package:food_delivery_app/screens/auth_screen.dart';
 import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/screens/restaurant_screen.dart';
 import 'package:food_delivery_app/widgets/nearby_restaurants.dart';
@@ -17,7 +15,10 @@ import 'package:food_delivery_app/widgets/recentorders.dart';
 import 'package:badges/badges.dart';
 import 'package:food_delivery_app/widgets/restuarant_rating.dart';
 
-import 'favscreen.dart';
+import '../constants/internet.dart';
+import 'authscreen.dart';
+import 'favorite_sccreen.dart';
+
 
 class HomeScreenPage extends StatefulWidget {
   const HomeScreenPage({Key? key}) : super(key: key);
@@ -98,24 +99,32 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
             child: ListView(
               children: [
                 Padding(padding: EdgeInsets.all(20.0),
-                  child:TextField(
+                  child:Container(
+                    height: 40,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).primaryColor),
+                      borderRadius: BorderRadius.circular(10.0)
+                    ),
+                  child:GestureDetector(
                     onTap: () => Navigator.push(context,
                         MaterialPageRoute(builder: (context)=> SearchPage())),
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 30.0),
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: "Search Food or Restuarants",
-                        hintStyle: TextStyle(
-                            color: Colors.grey
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide(width: 0.8,
-                            color: Theme.of(context).primaryColor
-                              ),
-                        )
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Icon(Icons.search_sharp,
+                            color: Theme.of(context).primaryColor,),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text("Search for Restaurant...",style: TextStyle(
+                              letterSpacing: 0.6,
+                              color: Colors.grey,
+                          fontWeight: FontWeight.w400),)
+                        ],
+                      ),
+                    ),
                     ),
                   ),
                 ),
@@ -128,10 +137,12 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
     );
   }
 }
+class SearchPage extends StatefulWidget{
+  SearchPageState createState()=> SearchPageState();
 
-class SearchPage extends StatelessWidget{
+}
+class SearchPageState extends State<SearchPage>{
   List<Widget> restaurantList=[];
-
   final text = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -208,34 +219,52 @@ class SearchPage extends StatelessWidget{
             ),
           )
       );
-
-
     });
    return Scaffold(
      body: Container(
+       height: 40,
+       width: double.infinity,
        margin: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
        child: TextFormField(
-         onTap: () => Navigator.push(context,
-             MaterialPageRoute(builder: (context)=> SearchPage())),
+         cursorColor: Theme.of(context).primaryColor,
+         autofocus: true,
+         controller: text,
          decoration: InputDecoration(
-             prefixIcon: Icon(Icons.search,color: Theme.of(context).primaryColor,),
-             contentPadding: EdgeInsets.symmetric(horizontal: 30.0),
+             prefixIcon: IconButton(
+               splashRadius: 20.0,
+               iconSize: 20.0,
+                 onPressed: (){
+               Navigator.of(context).pop();
+             }, icon: Icon(Icons.arrow_back_ios_rounded,
+             color: Theme.of(context).primaryColor,
+             )),
+             suffixIcon: text.text.isNotEmpty? GestureDetector(
+               child: Icon(Icons.clear_outlined,size: 18.0,
+                 color: Colors.grey[600],
+               ),
+               onTap: (){
+                 setState(() {
+                   text.clear();
+                 });
+               },
+             ):null,
              fillColor: Colors.white,
              filled: true,
              hintText: "Search Food or Restuarants",
              hintStyle: TextStyle(
-                 color: Colors.grey
+               letterSpacing: 0.6,
+                 color: Colors.grey,
+               fontWeight: FontWeight.w400
              ),
-             border: OutlineInputBorder(
-               borderRadius: BorderRadius.circular(30.0),
-               borderSide: BorderSide(width: 0.8,
-                   color: Theme.of(context).primaryColor
-               ),
-)),
+           contentPadding: EdgeInsets.symmetric(vertical: 10),
+           focusedBorder: OutlineInputBorder(
+             borderSide: BorderSide(color: Theme.of(context).primaryColor),
+             borderRadius: BorderRadius.circular(10.0)
+           )
+      ),
          onChanged: (value){
-           if(value.isNotEmpty){
-             return ;
-           }
+           setState(() {
+           });
          },
        ),
      )
@@ -262,10 +291,10 @@ class BottomBarState extends State<BottomBar> {
 
   List<Widget> _pages=<Widget>[
     HomeScreenPage(),
-    FavScreen(),
-    FavScreen(),
-    FavScreen()
-    
+    FavoriteScreen(),
+    FavoriteScreen(),
+    FavoriteScreen(),
+
   ];
   int _selectedtIndex=0;
 

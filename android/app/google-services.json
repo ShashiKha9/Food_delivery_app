@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "839127669948",
+    "project_id": "snacks-food-delivery",
+    "storage_bucket": "snacks-food-delivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839127669948:android:443e703f51c59c39ed04b9",
+        "android_client_info": {
+          "package_name": "com.example.food_delivery_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839127669948-4aagkuspev1cjdgp2boksm9vqh7gi4mo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkx3h72rVU9LRBfZs8RYDvzVLOnj484YI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839127669948-4aagkuspev1cjdgp2boksm9vqh7gi4mo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

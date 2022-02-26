@@ -11,10 +11,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
+  int counter =0;
   _buildCardItem(Order order){
-    int counter =0;
-
     final int minValue=0;
     final int maxValue=1000;
     print("repeat steps");
