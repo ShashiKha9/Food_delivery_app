@@ -1,3 +1,4 @@
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -143,144 +144,99 @@ class SearchPage extends StatefulWidget{
 }
 class SearchPageState extends State<SearchPage>{
   List<Widget> restaurantList=[];
+  List<String> restro=["apple","mango","grapes"];
   final text = TextEditingController();
+  void searchResult(String query){
+    List<String> dummySearch= <String>[];
+    dummySearch.addAll(restro);
+    if(query.isNotEmpty){
+      dummySearch.forEach((item) { 
+        if(item.contains(query)){
+          dummySearch.add(item);
+        }
+      });
+      setState(() {
+        restro.clear();
+        restro.addAll(dummySearch);
+
+      });
+      return;
+    } else {
+      setState(() {
+        restro.clear();
+        restro.addAll(restro);
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    restaurants.forEach((Restaurant restaurant) {
-      restaurantList.add(
-          GestureDetector(
-            onTap: ()=> Navigator.push(context, MaterialPageRoute(
-                builder: (BuildContext context)=> RestaurantScreen(restaurant: restaurant,))),
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10.0),
-              height: 150,
-              width: 370,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(
-                  width: 1.0,
-                  color: Color(0xffEEEEEEFF),),
-              ),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Hero(
-                      tag: restaurant.imageUrl,
-                      child: Image(
-                        height: 150,
-                        width: 150,
-                        image: AssetImage(restaurant.imageUrl),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(restaurant.name,
-                                style: TextStyle(fontSize: 20,
-                                    fontWeight: FontWeight.bold),),
-
-                              IconButton(onPressed:()=> print("hi"),
-                                icon: Icon( Icons.favorite ,
-                                  size: 30,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              )
-                            ],
-                          ),
-                          RatingStars(rating: restaurant.rating,),
-                          const SizedBox(
-                            height: 4.0,
-                          ),
-                          Text(restaurant.address,
-                            style: TextStyle(fontSize: 15,
-                                fontWeight: FontWeight.w500),
-                            overflow: TextOverflow.ellipsis,),
-                          const SizedBox(
-                            height: 4.0,
-                          ),
-                          Text("0.2 miles away",
-                            style: TextStyle(fontSize: 15,
-                                fontWeight: FontWeight.w500),),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
-      );
-    });
-   return Scaffold(
-     body: Container(
-       height: 40,
-       width: double.infinity,
-       margin: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
-       child: TextFormField(
-         cursorColor: Theme.of(context).primaryColor,
-         autofocus: true,
-         controller: text,
-         decoration: InputDecoration(
-             prefixIcon: IconButton(
-               splashRadius: 20.0,
-               iconSize: 20.0,
-                 onPressed: (){
-               Navigator.of(context).pop();
-             }, icon: Icon(Icons.arrow_back_ios_rounded,
-             color: Theme.of(context).primaryColor,
-             )),
-             suffixIcon: text.text.isNotEmpty? GestureDetector(
-               child: Icon(Icons.clear_outlined,size: 18.0,
-                 color: Colors.grey[600],
+     return
+       Scaffold(
+       body: Container(
+         height: 40,
+         width: double.infinity,
+         margin: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
+         child: Column(
+           children: [
+             TextFormField(
+               cursorColor: Theme.of(context).primaryColor,
+               autofocus: true,
+               controller: text,
+               decoration: InputDecoration(
+                   prefixIcon: IconButton(
+                       splashRadius: 20.0,
+                       iconSize: 20.0,
+                       onPressed: (){
+                         Navigator.of(context).pop();
+                       }, icon: Icon(Icons.arrow_back_ios_rounded,
+                     color: Theme.of(context).primaryColor,
+                   )),
+                   suffixIcon: text.text.isNotEmpty? GestureDetector(
+                     child: Icon(Icons.clear_outlined,size: 18.0,
+                       color: Colors.grey[600],
+                     ),
+                     onTap: (){
+                       setState(() {
+                         text.clear();
+                       });
+                     },
+                   ):null,
+                   fillColor: Colors.white,
+                   filled: true,
+                   hintText: "Search Food or Restuarants",
+                   hintStyle: TextStyle(
+                       letterSpacing: 0.6,
+                       color: Colors.grey,
+                       fontWeight: FontWeight.w400
+                   ),
+                   contentPadding: EdgeInsets.symmetric(vertical: 10),
+                   focusedBorder: OutlineInputBorder(
+                       borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                       borderRadius: BorderRadius.circular(10.0)
+                   )
                ),
-               onTap: (){
+               onChanged: (value){
                  setState(() {
-                   text.clear();
+                   searchResult(value);
                  });
                },
-             ):null,
-             fillColor: Colors.white,
-             filled: true,
-             hintText: "Search Food or Restuarants",
-             hintStyle: TextStyle(
-               letterSpacing: 0.6,
-                 color: Colors.grey,
-               fontWeight: FontWeight.w400
              ),
-           contentPadding: EdgeInsets.symmetric(vertical: 10),
-           focusedBorder: OutlineInputBorder(
-             borderSide: BorderSide(color: Theme.of(context).primaryColor),
-             borderRadius: BorderRadius.circular(10.0)
-           )
-      ),
-         onChanged: (value){
-           setState(() {
-           });
-         },
-       ),
-     )
-   );
-  }
-  Widget _searchListView(){
-    return ListView.builder(
-      itemCount: restaurantList.length,
-        itemBuilder: (context,index){
+             Expanded(child: ListView.builder(
+               itemCount: restro.length,
+                 itemBuilder: (context, index) {
+                   return ListTile(
+                     title: Text(restro[index]),
+                   );
+                 }))
+           ],
 
-        return Card(
-          child: ListTile(
-            title: Text("d"),
-          ),
-        );
-        });
+         ),
+
+
+       ),
+
+   );
+
   }
 }
 

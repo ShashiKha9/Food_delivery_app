@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:food_delivery_app/screens/payment_screen.dart';
 // Import the generated file
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
        primaryColor: Colors.deepOrangeAccent,
        canvasColor: Colors.deepOrangeAccent,
      ),
-     home: BottomBar(),
+     home: PaymentScreen(),
 
     );
   }
