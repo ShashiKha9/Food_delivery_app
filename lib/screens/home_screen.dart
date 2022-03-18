@@ -14,6 +14,7 @@ import 'package:food_delivery_app/widgets/nearby_restaurants.dart';
 import 'package:food_delivery_app/widgets/recentorders.dart';
 import 'package:badges/badges.dart';
 import 'package:food_delivery_app/widgets/restuarant_rating.dart';
+import 'package:food_delivery_app/widgets/searchwidget.dart';
 
 import '../constants/internet.dart';
 import 'authscreen.dart';
@@ -21,13 +22,14 @@ import 'favorite_sccreen.dart';
 
 
 class HomeScreenPage extends StatefulWidget {
-  const HomeScreenPage({Key? key}) : super(key: key);
+  const HomeScreenPage({Key? key,}) : super(key: key);
 
   @override
   _HomeScreenPageState createState() => _HomeScreenPageState(connectivity: Connectivity());
 }
 
 class _HomeScreenPageState extends State<HomeScreenPage> {
+   String text="restaurant0";
   final Connectivity connectivity;
   _HomeScreenPageState({required this.connectivity,});
 
@@ -69,8 +71,6 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                 position: BadgePosition.topEnd(top: -16,end: -11),
                 badgeContent: Text(currentUser.cart.length.toString(),style: TextStyle(color: Colors.white),),
                 child: Icon(Icons.shopping_cart_outlined,color: Colors.white,),
-
-
               )
           ),
         ],
@@ -138,96 +138,64 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
   }
 }
 class SearchPage extends StatefulWidget{
-   final ValueChanged<String> onChanged;
-    SearchPage(this.onChanged);
-
+  const  SearchPage({Key ?key}):super(key: key);
   SearchPageState createState()=> SearchPageState();
-
 }
 class SearchPageState extends State<SearchPage>{
-  final text = TextEditingController();
   late List<Restaurant> rest=restaurants;
+  String query='';
+
   @override
   Widget build(BuildContext context) {
      return
        Scaffold(
-       body: Container(
-         height: 48,
-         width: double.infinity,
-         margin: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
-         child: Column(
-           children: [
-             TextFormField(
-               cursorColor: Theme.of(context).primaryColor,
-               autofocus: true,
-               controller: text,
-               decoration: InputDecoration(
-                   prefixIcon: IconButton(
-                       splashRadius: 20.0,
-                       iconSize: 20.0,
-                       onPressed: (){
-                         Navigator.of(context).pop();
-                       }, icon: Icon(Icons.arrow_back_ios_rounded,
-                     color: Theme.of(context).primaryColor,
-                   )),
-                   suffixIcon: text.text.isNotEmpty? GestureDetector(
-                     child: Icon(Icons.clear_outlined,size: 18.0,
-                       color: Colors.grey[600],
-                     ),
-                     onTap: (){
-                       setState(() {
-                         text.clear();
-                       });
-                     },
-                   ):null,
-                   fillColor: Colors.white,
-                   filled: true,
-                   hintText: "Search Food or Restuarants",
-                   hintStyle: TextStyle(
-                       letterSpacing: 0.6,
-                       color: Colors.grey,
-                       fontWeight: FontWeight.w400
-                   ),
-                   contentPadding: EdgeInsets.symmetric(vertical: 10),
-                   focusedBorder: OutlineInputBorder(
-                       borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                       borderRadius: BorderRadius.circular(10.0)
-                   )
-               ),
-               onChanged: widget.onChanged,
-             ),
-             Expanded(child: ListView.builder(
+       body:Column(
+         children: [
+           buildSearch(),
+           Expanded(child: ListView.builder(
                itemCount: rest.length,
-                 itemBuilder: (context, index) {
+               itemBuilder: (context, index) {
                  final r = rest[index];
                  return buildRest(r);
-                 }))
-           ],
-
-         ),
-       ),
-
+               }))
+         ],
+       )
    );
 
   }
 
+
   Widget buildRest(Restaurant r) =>ListTile(
-    leading: Image.asset(r.imageUrl,
-      fit: BoxFit.cover,
-      width: 50,
+    leading: Container(
       height: 50,
+      width: 50,
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage(r.imageUrl,),
+            fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(8.0)
+      ),
     ),
     title: Text(r.name),
     subtitle: Text(r.address),
   );
+  Widget buildSearch()=> SearchWidget(
+    onChanged: searchRest,
+    text: query,
+  );
 
   void searchRest(String query){
-    final restaurant = rest.where((r) {
+    final rest = restaurants.where((r) {
       final nameLower = r.name.toLowerCase();
       final searchLower = query.toLowerCase();
 
       return nameLower.contains(searchLower);
     }).toList();
+
+    setState(() {
+      this.query=query;
+      this.rest=rest;
+    });
   }
 }
 
