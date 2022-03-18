@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
        primaryColor: Colors.deepOrangeAccent,
        canvasColor: Colors.deepOrangeAccent,
      ),
-     home: PaymentScreen(),
+     home: BottomBar(),
 
     );
   }

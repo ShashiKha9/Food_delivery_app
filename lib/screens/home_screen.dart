@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/data/data.dart';
-import 'package:food_delivery_app/data/data.dart';
 import 'package:food_delivery_app/logic/cubit/internet_cubit.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
 import 'package:food_delivery_app/screens/cart_screen.dart';
@@ -139,41 +138,21 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
   }
 }
 class SearchPage extends StatefulWidget{
+   final ValueChanged<String> onChanged;
+    SearchPage(this.onChanged);
+
   SearchPageState createState()=> SearchPageState();
 
 }
 class SearchPageState extends State<SearchPage>{
-  List<Widget> restaurantList=[];
-  List<String> restro=["apple","mango","grapes"];
   final text = TextEditingController();
-  void searchResult(String query){
-    List<String> dummySearch= <String>[];
-    dummySearch.addAll(restro);
-    if(query.isNotEmpty){
-      dummySearch.forEach((item) { 
-        if(item.contains(query)){
-          dummySearch.add(item);
-        }
-      });
-      setState(() {
-        restro.clear();
-        restro.addAll(dummySearch);
-
-      });
-      return;
-    } else {
-      setState(() {
-        restro.clear();
-        restro.addAll(restro);
-      });
-    }
-  }
+  late List<Restaurant> rest=restaurants;
   @override
   Widget build(BuildContext context) {
      return
        Scaffold(
        body: Container(
-         height: 40,
+         height: 48,
          width: double.infinity,
          margin: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
          child: Column(
@@ -215,30 +194,43 @@ class SearchPageState extends State<SearchPage>{
                        borderRadius: BorderRadius.circular(10.0)
                    )
                ),
-               onChanged: (value){
-                 setState(() {
-                   searchResult(value);
-                 });
-               },
+               onChanged: widget.onChanged,
              ),
              Expanded(child: ListView.builder(
-               itemCount: restro.length,
+               itemCount: rest.length,
                  itemBuilder: (context, index) {
-                   return ListTile(
-                     title: Text(restro[index]),
-                   );
+                 final r = rest[index];
+                 return buildRest(r);
                  }))
            ],
 
          ),
-
-
        ),
 
    );
 
   }
+
+  Widget buildRest(Restaurant r) =>ListTile(
+    leading: Image.asset(r.imageUrl,
+      fit: BoxFit.cover,
+      width: 50,
+      height: 50,
+    ),
+    title: Text(r.name),
+    subtitle: Text(r.address),
+  );
+
+  void searchRest(String query){
+    final restaurant = rest.where((r) {
+      final nameLower = r.name.toLowerCase();
+      final searchLower = query.toLowerCase();
+
+      return nameLower.contains(searchLower);
+    }).toList();
+  }
 }
+
 
 class BottomBar extends StatefulWidget{
   BottomBarState createState()=> BottomBarState();
